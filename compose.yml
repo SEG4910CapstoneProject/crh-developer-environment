@@ -1,0 +1,178 @@
+services:
+  postgres:
+    extends:
+      file: ../crh-database/compose.yml
+      service: postgres
+    restart: no
+    ports:
+      - "${POSTGRES_PORT}:5432" 
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:${POSTGRES_PORT}"]
+      interval: 1m
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+      start_interval: 5s
+
+  mongo:
+    extends:
+      file: ../crh-database/compose.yml
+      service: mongo
+    restart: no
+    ports:
+      - "${MONGO_PORT}:27017"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:${MONGO_PORT}"]
+      interval: 1m
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+      start_interval: 5s
+      
+  cyber-report-hub-site:
+    build: ../crh-CyberReportHub-Site
+    ports:
+      - "${FRONTEND_PORT}:${FRONTEND_PORT}"
+    restart: no
+    depends_on:
+      - rest-api
+    
+  feature-extractor:
+    build: ../crh-feature-extractor
+    restart: no
+    depends_on:
+      - postgres
+      - mongo
+    environment:
+      POSTGRES_HOST: ${POSTGRES_HOST}
+      POSTGRES_PORT: ${POSTGRES_PORT}
+      POSTGRES_DB_NAME: ${POSTGRES_DB_NAME}
+      POSTGRES_USERNAME: ${POSTGRES_USERNAME}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      MONGO_HOST: ${MONGO_HOST}
+      MONGO_PORT: ${MONGO_PORT}
+      MONGO_USERNAME: ${MONGO_USERNAME}
+      MONGO_PASSWORD: ${MONGO_PASSWORD}
+      MONGO_DB_NAME: ${MONGO_DB_NAME}
+  
+  rss-feed-source-task:
+    build: ../crh-rss-feed-source
+    restart: no
+    depends_on:
+      - postgres
+      - mongo
+    environment:
+      POSTGRES_HOST: ${POSTGRES_HOST}
+      POSTGRES_PORT: ${POSTGRES_PORT}
+      POSTGRES_DB_NAME: ${POSTGRES_DB_NAME}
+      POSTGRES_USERNAME: ${POSTGRES_USERNAME}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      MONGO_HOST: ${MONGO_HOST}
+      MONGO_PORT: ${MONGO_PORT}
+      MONGO_USERNAME: ${MONGO_USERNAME}
+      MONGO_PASSWORD: ${MONGO_PASSWORD}
+      MONGO_DB_NAME: ${MONGO_DB_NAME}
+  
+  web-scraping:
+    build: ../crh-web-scraping
+    restart: no
+    depends_on:
+      - postgres
+      - mongo
+    environment:
+      MONGO_USERNAME: ${MONGO_USERNAME}
+      MONGO_PASSWORD: ${MONGO_PASSWORD}
+      MONGO_DB_NAME: ${MONGO_DB_NAME}
+      MONGO_COLLECTION: ${MONGO_COLLECTION}
+      MONGO_HOST: ${MONGO_HOST}
+      MONGO_PORT: ${MONGO_PORT}
+
+  rest-api:
+    build: ../crh-rest-api
+    restart: no
+    ports:
+      - "${REST_API_PORT}:${REST_API_PORT}"
+    depends_on:
+      - postgres
+      - mongo
+    environment:
+      POSTGRES_HOST: ${POSTGRES_HOST}
+      POSTGRES_PORT: ${POSTGRES_PORT}
+      POSTGRES_DB_NAME: ${POSTGRES_DB_NAME}
+      POSTGRES_USERNAME: ${POSTGRES_USERNAME}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      MONGO_HOST: ${MONGO_HOST}
+      MONGO_PORT: ${MONGO_PORT}
+      MONGO_USERNAME: ${MONGO_USERNAME}
+      MONGO_PASSWORD: ${MONGO_PASSWORD}
+      MONGO_DB_NAME: ${MONGO_DB_NAME}
+      REST_API_PORT: ${REST_API_PORT}
+      ENABLE_SPRING_DOCS: ${ENABLE_SPRING_DOCS}
+      ALLOWED_ORIGINS_PATTERNS: ${ALLOWED_ORIGINS_PATTERNS}
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:${REST_API_PORT}"]
+      interval: 1m
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+      start_interval: 5s
+      
+  report-generator:
+    build: ../crh-report-generator
+    restart: no
+    depends_on:
+      - postgres
+      - mongo
+    environment:
+      POSTGRES_HOST: ${POSTGRES_HOST}
+      POSTGRES_PORT: ${POSTGRES_PORT}
+      POSTGRES_DB_NAME: ${POSTGRES_DB_NAME}
+      POSTGRES_USERNAME: ${POSTGRES_USERNAME}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+  
+  enrichment-api:
+    build: ../crh-enrichment-api
+    container_name: enrichment-api
+    restart: no
+    ports:
+      - "${ENRICHMENT_PORT}:${ENRICHMENT_PORT}"
+    depends_on:
+      - postgres
+      - mongo
+    environment:
+      MONGO_USERNAME: ${MONGO_USERNAME}
+      MONGO_PASSWORD: ${MONGO_PASSWORD}
+      MONGO_DB_NAME: ${MONGO_DB_NAME}
+      MONGO_COLLECTION: ${MONGO_COLLECTION}
+      MONGO_HOST: ${MONGO_HOST}
+      MONGO_PORT: ${MONGO_PORT}
+      MONGO_ML_COLLECTION: ${MONGO_ML_COLLECTION}
+      ENRICHMENT_PORT: ${ENRICHMENT_PORT}
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:${ENRICHMENT_PORT}"]
+      interval: 1m
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+      start_interval: 5s
+
+  article-enricher:
+    build: ../crh-article-enricher
+    container_name: article-enricher
+    restart: no
+    depends_on:
+      - postgres
+      - mongo
+    environment:
+      POSTGRES_HOST: ${POSTGRES_HOST}
+      POSTGRES_PORT: ${POSTGRES_PORT}
+      POSTGRES_DB_NAME: ${POSTGRES_DB_NAME}
+      POSTGRES_USERNAME: ${POSTGRES_USERNAME}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      MONGO_HOST: ${MONGO_HOST}
+      MONGO_PORT: ${MONGO_PORT}
+      MONGO_USERNAME: ${MONGO_USERNAME}
+      MONGO_PASSWORD: ${MONGO_PASSWORD}
+      MONGO_DB_NAME: ${MONGO_DB_NAME}
+      ARTICLE_ENRICHER_HOST: ${ARTICLE_ENRICHER_HOST}
+  
