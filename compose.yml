@@ -1,6 +1,6 @@
-# networks:
-#   open-cti-network:
-#     external: true
+networks:
+  open-cti-network:
+    external: true
 
 services:
   postgres:
@@ -17,6 +17,9 @@ services:
       retries: 3
       start_period: 10s
       start_interval: 5s
+    networks:
+      - open-cti-network
+
 
   mongo:
     extends:
@@ -32,6 +35,9 @@ services:
       retries: 3
       start_period: 10s
       start_interval: 5s
+    networks:
+      - open-cti-network
+
       
   cyber-report-hub-site:
     build: ../crh-CyberReportHub-Site
@@ -76,6 +82,10 @@ services:
       MONGO_USERNAME: ${MONGO_USERNAME}
       MONGO_PASSWORD: ${MONGO_PASSWORD}
       MONGO_DB_NAME: ${MONGO_DB_NAME}
+      OPEN_CTI_PRIVATE_KEY: ${OPEN_CTI_PRIVATE_KEY}
+
+    networks:
+      - open-cti-network
   
   web-scraping:
     build: ../crh-web-scraping
