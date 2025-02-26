@@ -64,6 +64,8 @@ services:
       MONGO_USERNAME: ${MONGO_USERNAME}
       MONGO_PASSWORD: ${MONGO_PASSWORD}
       MONGO_DB_NAME: ${MONGO_DB_NAME}
+    networks:
+      - open-cti-network
   
   rss-feed-source-task:
     build: ../crh-rss-feed-source
@@ -100,6 +102,8 @@ services:
       MONGO_COLLECTION: ${MONGO_COLLECTION}
       MONGO_HOST: ${MONGO_HOST}
       MONGO_PORT: ${MONGO_PORT}
+    networks:
+      - open-cti-network
 
   rest-api:
     build: ../crh-rest-api
@@ -130,6 +134,8 @@ services:
       retries: 3
       start_period: 10s
       start_interval: 5s
+    networks:
+      - open-cti-network
       
   report-generator:
     build: ../crh-report-generator
@@ -143,6 +149,8 @@ services:
       POSTGRES_DB_NAME: ${POSTGRES_DB_NAME}
       POSTGRES_USERNAME: ${POSTGRES_USERNAME}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    networks:
+      - open-cti-network
   
   enrichment-api:
     build: ../crh-enrichment-api
@@ -169,6 +177,8 @@ services:
       retries: 3
       start_period: 10s
       start_interval: 5s
+    networks:
+      - open-cti-network
 
   article-enricher:
     build: ../crh-article-enricher
@@ -189,6 +199,8 @@ services:
       MONGO_PASSWORD: ${MONGO_PASSWORD}
       MONGO_DB_NAME: ${MONGO_DB_NAME}
       ARTICLE_ENRICHER_HOST: ${ARTICLE_ENRICHER_HOST}
+    networks:
+      - open-cti-network
 
 # uncomment this once we are able to run open cti from this main docker file, for now, make sure to run the open cti repo using docker 
 # compose using the specified repo before starting this project
