@@ -1,6 +1,6 @@
 # CyberReportHub developer environment
 
-CyberReportHub is a system that collects articles from rss feeds and analyzes the articles to generate reports.
+CyberReportHub is a system that processes articles from rss feeds coming from the Open Cti platform,  and analyzes the articles to generate reports.
 
 ## Prerequisites
 - A docker Engine (Docker Desktop is recommended)
@@ -17,11 +17,19 @@ To create containers for the environment in docker engine run the following comm
 - On Windows using powershell: `./setup-docker.ps1`
 - On Mac or linux using terminal: `sh ./setup-docker.sh`
 
+## Note: 
+If there is a problem with the scripts to run the docker containers, just run: 	**docker compose --env-file ./local-variables.env up --no-start --detach** 
+from inside the **developer repo** 
+
 ## How to add a new service
 ### 1. Add repository to check
 Modify `setup-docker.sh` and `setup-docker.ps1` such that the `repositories` variable contains the **name of the git repository** in the list. 
 
 ## Running the project
+
+## Important
+1. All the used services are the ones starting by **crh** in our github organization. Please ignore the duplicate ones.
+2. Make sure **crh-open-cti-integration** service is correctly configured according to the provided readme.
 
 Most services in this project are batch tasks (they will auto shutdown when completed). Only a small number of services will continuously run. They are:
 
@@ -30,13 +38,22 @@ Most services in this project are batch tasks (they will auto shutdown when comp
 - crh-enrichment-api
 - crh-rest-api
 
-To run the project, start the above first then run the tasks in this order.
+### To run the project, start the tasks in this order: (by just using the play button in docker desktop)
 
-1. crh-rss-feed-source
-2. crh-web-scraping
-3. crh-feature-extractor
-4. crh-article-enricher
-5. crh-report-generator
+1. crh-database (both databases, postgres and mongo)
+2. crh-open-cti-integration
+
+When your cpu consumption returned to an acceptable state, then carry on: 
+3. crh-rss-feed-source
+When the logs stop showing for the rss service, stop the service from docker desktop and also stop the open-cti service.
+
+4. crh-CyberReportHub-Site
+5. crh-enrichment-api
+6. crh-rest-api
+7. crh-web-scraping (it is fine if this service output log errors, just make sure to stop it when it's done if it doesnt shutdown on its own.)
+8. crh-feature-extractor
+9. crh-article-enricher
+10. crh-report-generator
 
 You may access the site on `localhost:80`.
 
