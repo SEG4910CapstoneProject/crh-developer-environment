@@ -38,12 +38,15 @@ Most services in this project are batch tasks (they will auto shutdown when comp
 - crh-enrichment-api
 - crh-rest-api
 
-### To run the project, start the tasks in this order: (by just using the play button in docker desktop)
+### To run the project, start the tasks in this order:
 
-1. crh-database (both databases, postgres and mongo)
-2. crh-open-cti-integration
+1. crh-database (both databases, postgres and mongo) (by just using the play button in docker desktop)
+2. crh-open-cti-integration (using the method below)
+
+To run the crh-open-cti-integration service, in the command line, once inside the crh-open-cti-integration repo, run: **docker compose up -d**
 
 When your cpu consumption returned to an acceptable state, then carry on: 
+
 3. crh-rss-feed-source
 When the logs stop showing for the rss service, stop the service from docker desktop and also stop the open-cti service.
 
