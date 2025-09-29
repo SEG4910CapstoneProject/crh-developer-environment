@@ -202,6 +202,34 @@ services:
     networks:
       - open-cti-network
 
+  email-service:
+    build: ../crh-email-service      
+    container_name: crh-email-service
+    restart: no
+    ports:
+      - "5000:5000"                  # API endpoint (POST /send-email)
+    environment:
+      SMTP_HOST: mailhog             # for dev/test
+      SMTP_PORT: "1025"
+      SMTP_FROM: reports@example.com
+      USE_STARTTLS: "false"
+      APP_PORT: 5000
+    depends_on:
+      - mailhog
+    networks:
+      - open-cti-network
+
+  mailhog:
+    image: mailhog/mailhog:v1.0.1
+    container_name: mailhog
+    restart: no
+    ports:
+      - "1025:1025"   # SMTP port
+      - "8025:8025"   # Web UI for viewing test emails
+    networks:
+      - open-cti-network
+
+
 # uncomment this once we are able to run open cti from this main docker file, for now, make sure to run the open cti repo using docker 
 # compose using the specified repo before starting this project
 

@@ -54,10 +54,11 @@ When the logs stop showing for the rss service, stop the service from docker des
 4. crh-CyberReportHub-Site
 5. crh-enrichment-api
 6. crh-rest-api
-7. crh-web-scraping (it is fine if this service output log errors, just make sure to stop it when it's done if it doesnt shutdown on its own.)
-8. crh-feature-extractor
-9. crh-article-enricher
-10. crh-report-generator
+7. crh-email-service 
+8. crh-web-scraping (it is fine if this service output log errors, just make sure to stop it when it's done if it doesnt shutdown on its own.)
+9. crh-feature-extractor
+10. crh-article-enricher
+11. crh-report-generator
 
 You may access the site on `localhost:80`.
 
