@@ -37,6 +37,7 @@ Most services in this project are batch tasks (they will auto shutdown when comp
 - crh-CyberReportHub-Site
 - crh-enrichment-api
 - crh-rest-api
+- crh-email-service
 
 ### To run the project, start the tasks in this order:
 
