@@ -10,6 +10,8 @@ repositories=(
 	"crh-CyberReportHub-Site"
 	"crh-enrichment-api"
 	"crh-article-enricher"
+	"crh-open-cti-integration"
+	"crh-email-service"
 )
 
 foundAll=1
