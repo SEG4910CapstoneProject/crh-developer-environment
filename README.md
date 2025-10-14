@@ -29,7 +29,7 @@ Modify `setup-docker.sh` and `setup-docker.ps1` such that the `repositories` var
 
 ## Important
 1. All the used services are the ones starting by **crh** in our github organization. Please ignore the duplicate ones.
-2. Make sure **crh-open-cti-integration** service is correctly configured according to the provided readme.
+2. Make sure **crh-open-cti-integration** service is correctly configured according to the provided readme. https://github.com/SEG4910CapstoneProject/crh-open-cti-integration
 
 Most services in this project are batch tasks (they will auto shutdown when completed). Only a small number of services will continuously run. They are:
 
@@ -39,29 +39,35 @@ Most services in this project are batch tasks (they will auto shutdown when comp
 - crh-rest-api
 - crh-email-service
 
-### To run the project, start the tasks in this order:
+### To run the project:
 
-1. crh-database (both databases, postgres and mongo) (by just using the play button in docker desktop)
-2. crh-open-cti-integration (using the method below)
+1. run: **docker compose --env-file ./local-variables.env build** from inside the **developer repo** (make sure you have the respective .env files and they are added to the **crh-open-cti-integration** service, the **crh-rss-feed-source** service, and the **crh-rest-api** service, contact the maintainers to get those .env files )
 
-To run the crh-open-cti-integration service, in the command line, once inside the crh-open-cti-integration repo, run: **docker compose up -d**
+2. run: **docker compose --env-file ./local-variables.env up --no-start --detach**
 
-When your cpu consumption returned to an acceptable state, then carry on: 
+3. start services in these orders using the play button in docker desktop: (or if on cmd,  do: **docker start** then the name of the service)
 
-3. crh-rss-feed-source
-When the logs stop showing for the rss service, stop the service from docker desktop and also stop the open-cti service.
+    31. crh-database (both databases, postgres and mongo)
+    32. crh-open-cti-integration (using the method below)
 
-4. crh-CyberReportHub-Site
-5. crh-enrichment-api
-6. crh-rest-api
-7. crh-email-service
-8. mailhog
-9. crh-web-scraping (it is fine if this service output log errors, just make sure to stop it when it's done if it doesnt shutdown on its own.)
-10. crh-feature-extractor
-11. crh-article-enricher
-12. crh-report-generator
+        To run the crh-open-cti-integration service, in the command line, once inside the crh-open-cti-integration repo, run: **docker compose up -d**
+        Note: If you just installed open cti, you might have the service running already, just skip this step then
 
-You may access the site on `localhost:80`.
+        Go to localhost:8080 (where open cti lives), the .env file inside the open cti service will give you credentials to log in, once logged in, go to: Data-> Ingestion -> alienvault, make sure that all operations are completed and nothing is in progress, then go back and visit the bleeping computer rss ingestor, check the same, if all is completed, proceed next, if not, wait until it's the case, otherwise, you will end up with incomplete data.
+
+    33. crh-rss-feed-source (When the logs stop showing for the rss service, stop the service from docker desktop and also stop the open-cti service.)
+
+    34. crh-CyberReportHub-Site
+    35. crh-enrichment-api
+    36. crh-rest-api
+    37. crh-email-service
+    38. mailhog
+    39. crh-web-scraping (it is fine if this service output log errors, just make sure to stop it when it's done if it doesnt shutdown on its own.)
+    40. crh-feature-extractor
+    41. crh-article-enricher
+    42. crh-report-generator
+
+You may access the site on `localhost:80`. You are done. 
 
 ### 2. Add service to docker compose file
 
