@@ -111,6 +111,8 @@ services:
     restart: no
     ports:
       - "${REST_API_PORT}:${REST_API_PORT}"
+    env_file:
+      - ./local-variables.env
     depends_on:
       - postgres
       - mongo
@@ -231,6 +233,19 @@ services:
       - "8025:8025"   # Web UI for viewing test emails
     networks:
       - open-cti-network
+  ollama:
+    image: ollama/ollama
+    container_name: ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama:/root/.ollama
+    restart: unless-stopped
+    networks:
+      - open-cti-network
+
+volumes:
+  ollama:
 
 
 # uncomment this once we are able to run open cti from this main docker file, for now, make sure to run the open cti repo using docker 
