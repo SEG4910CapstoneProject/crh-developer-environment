@@ -113,11 +113,10 @@ services:
       - "${REST_API_PORT}:${REST_API_PORT}"
     env_file:
       - ./local-variables.env
+      - ../crh-rest-api/.env
     depends_on:
       - postgres
       - mongo
-    env_file:
-      - ../crh-rest-api/.env
     environment:
       POSTGRES_HOST: ${POSTGRES_HOST}
       POSTGRES_PORT: ${POSTGRES_PORT}
