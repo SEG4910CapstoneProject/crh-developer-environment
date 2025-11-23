@@ -243,6 +243,26 @@ services:
     restart: unless-stopped
     networks:
       - open-cti-network
+  
+  article-summarizer:
+    build: ../crh-article-summarizer
+    container_name: article-summarizer
+    depends_on:
+      - mongo
+    environment:
+      MONGO_USERNAME: ${MONGO_USERNAME}
+      MONGO_PASSWORD: ${MONGO_PASSWORD}
+      MONGO_DB_NAME: ${MONGO_DB_NAME}
+      MONGO_COLLECTION: ${MONGO_COLLECTION}
+      MONGO_HOST: ${MONGO_HOST}
+      MONGO_PORT: ${MONGO_PORT}
+    ports:
+      - "8004:8004"
+    networks:
+      - open-cti-network
+    volumes:
+      - ../crh-article-summarizer:/app
+
 
 volumes:
   ollama:
