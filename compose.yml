@@ -111,11 +111,12 @@ services:
     restart: no
     ports:
       - "${REST_API_PORT}:${REST_API_PORT}"
+    env_file:
+      - ./local-variables.env
+      - ../crh-rest-api/.env
     depends_on:
       - postgres
       - mongo
-    env_file:
-      - ../crh-rest-api/.env
     environment:
       POSTGRES_HOST: ${POSTGRES_HOST}
       POSTGRES_PORT: ${POSTGRES_PORT}
@@ -231,6 +232,39 @@ services:
       - "8025:8025"   # Web UI for viewing test emails
     networks:
       - open-cti-network
+  ollama:
+    image: ollama/ollama
+    container_name: ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama:/root/.ollama
+    restart: unless-stopped
+    networks:
+      - open-cti-network
+  
+  article-summarizer:
+    build: ../crh-article-summarizer
+    container_name: article-summarizer
+    depends_on:
+      - mongo
+    environment:
+      MONGO_USERNAME: ${MONGO_USERNAME}
+      MONGO_PASSWORD: ${MONGO_PASSWORD}
+      MONGO_DB_NAME: ${MONGO_DB_NAME}
+      MONGO_COLLECTION: ${MONGO_COLLECTION}
+      MONGO_HOST: ${MONGO_HOST}
+      MONGO_PORT: ${MONGO_PORT}
+    ports:
+      - "8004:8004"
+    networks:
+      - open-cti-network
+    volumes:
+      - ../crh-article-summarizer:/app
+
+
+volumes:
+  ollama:
 
 
 # uncomment this once we are able to run open cti from this main docker file, for now, make sure to run the open cti repo using docker 
