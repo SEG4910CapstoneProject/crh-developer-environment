@@ -9,6 +9,8 @@ The chatbot uses ollama and runs on port 11434. The model that is currently bein
 
 3. Once the Ollama container is running, on the docker terminal run:
  **docker exec -it ollama ollama pull llama3.2:3b**
+ **docker exec -it ollama ollama pull nomic-embed-text**
+
  This could take up to 5 minutes.
 
 After completing these steps, the model will be available for queries. The container can be stopped or started like other containers using commands or docker desktop. 
