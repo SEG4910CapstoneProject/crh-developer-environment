@@ -47,25 +47,27 @@ Most services in this project are batch tasks (they will auto shutdown when comp
 
 3. start services in these orders using the play button in docker desktop: (or if on cmd,  do: **docker start** then the name of the service)
 
-    31. crh-database (both databases, postgres and mongo)
-    32. crh-open-cti-integration (using the method below)
+    1. crh-database (both databases, postgres and mongo)
+    2. crh-open-cti-integration (using the method below)
 
         To run the crh-open-cti-integration service, in the command line, once inside the crh-open-cti-integration repo, run: **docker compose up -d**
         Note: If you just installed open cti, you might have the service running already, just skip this step then
 
         Go to localhost:8080 (where open cti lives), the .env file inside the open cti service will give you credentials to log in, once logged in, go to: Data-> Ingestion -> alienvault, make sure that all operations are completed and nothing is in progress, then go back and visit the bleeping computer rss ingestor, check the same, if all is completed, proceed next, if not, wait until it's the case, otherwise, you will end up with incomplete data.
 
-    33. crh-rss-feed-source (When the logs stop showing for the rss service, stop the service from docker desktop and also stop the open-cti service.)
+    3. crh-rss-feed-source (When the logs stop showing for the rss service, stop the service from docker desktop and also stop the open-cti service.)
 
-    34. crh-CyberReportHub-Site
-    35. crh-enrichment-api
-    36. crh-rest-api
-    37. crh-email-service
-    38. mailhog
-    39. crh-web-scraping (it is fine if this service output log errors, just make sure to stop it when it's done if it doesnt shutdown on its own.)
-    40. crh-feature-extractor
-    41. crh-article-enricher
-    42. crh-report-generator
+    4. crh-CyberReportHub-Site
+    5. ollama (please refer to Chatbot-Instructions.md for instructions on how to set up ollama)
+    6. crh-enrichment-api
+    7. crh-rest-api
+    8. crh-email-service
+    9. mailhog
+    10. crh-web-scraping (it is fine if this service output log errors, just make sure to stop it when it's done if it doesnt shutdown on its own.)
+    11. crh-feature-extractor
+    12. crh-article-enricher
+    13. crh-report-generator
+    14. crh-article-summarizer
 
 You may access the site on `localhost:80`. You are done. 
 
