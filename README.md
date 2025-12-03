@@ -38,6 +38,9 @@ Most services in this project are batch tasks (they will auto shutdown when comp
 - crh-enrichment-api
 - crh-rest-api
 - crh-email-service
+- ollama
+- article-summarizer
+
 
 ### To run the project:
 
@@ -62,12 +65,11 @@ Most services in this project are batch tasks (they will auto shutdown when comp
     6. crh-enrichment-api
     7. crh-rest-api
     8. crh-email-service
-    9. mailhog
-    10. crh-web-scraping (it is fine if this service output log errors, just make sure to stop it when it's done if it doesnt shutdown on its own.)
-    11. crh-feature-extractor
-    12. crh-article-enricher
-    13. crh-report-generator
-    14. crh-article-summarizer
+    9. crh-web-scraping (it is fine if this service output log errors, just make sure to stop it when it's done if it doesnt shutdown on its own.)
+    10. crh-feature-extractor
+    11. crh-article-enricher
+    12. crh-report-generator
+    13. crh-article-summarizer
 
 You may access the site on `localhost:80`. You are done. 
 
